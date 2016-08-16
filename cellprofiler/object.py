@@ -141,13 +141,13 @@ class Objects(object):
         """
         if self.__small_removed_segmented is not None:
             dense, indices = self.__small_removed_segmented.get_dense()
-            return dense[0, 0, 0, 0]
+
+            return self.__to_labels(dense)
+
         return self.unedited_segmented
 
     def set_small_removed_segmented(self, labels):
-        dense = downsample_labels(labels).reshape(
-                (1, 1, 1, 1, labels.shape[0], labels.shape[1]))
-        self.__small_removed_segmented = Segmentation(dense=dense)
+        self.__small_removed_segmented = self.__from_labels(labels)
 
     small_removed_segmented = property(get_small_removed_segmented,
                                        set_small_removed_segmented)
