@@ -53,7 +53,12 @@ class Objects(object):
 
     def set_segmented(self, labels):
         dense = downsample_labels(labels)
-        dense = dense.reshape((1, 1, 1, 1, dense.shape[0], dense.shape[1]))
+
+        if len(labels.shape) == 3:
+            dense = dense.reshape((1, 1, 1, dense.shape[2], dense.shape[0], dense.shape[1]))
+        else:
+            dense = dense.reshape((1, 1, 1, 1, dense.shape[0], dense.shape[1]))
+
         self.__segmented = Segmentation(dense=dense)
 
     segmented = property(get_segmented, set_segmented)
