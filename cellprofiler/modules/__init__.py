@@ -13,6 +13,7 @@ from cellprofiler.modules.plugins import plugin_list
 from cellprofiler.preferences import get_plugin_directory
 
 # python modules and their corresponding cellprofiler.module classes
+
 pymodule_to_cpmodule = {
     'edgedetection': 'EdgeDetection',
     'align': 'Align',
@@ -27,7 +28,6 @@ pymodule_to_cpmodule = {
     'correctilluminationapply': 'CorrectIlluminationApply',
     'correctilluminationcalculate': 'CorrectIlluminationCalculate',
     'createbatchfiles': 'CreateBatchFiles',
-    'createwebpage': 'CreateWebPage',
     'crop': 'Crop',
     'definegrid': 'DefineGrid',
     'dilation': 'Dilation',
@@ -60,7 +60,6 @@ pymodule_to_cpmodule = {
     'imagemath': 'ImageMath',
     'images': 'Images',
     'imagesegmentation': 'ImageSegmentation',
-    'inputexternal': 'InputExternal',
     'invertforprinting': 'InvertForPrinting',
     'labelimages': 'LabelImages',
     'loaddata': 'LoadData',
@@ -89,7 +88,6 @@ pymodule_to_cpmodule = {
     'namesandtypes': 'NamesAndTypes',
     'noisereduction': 'NoiseReduction',
     'opening': 'Opening',
-    'outputexternal': 'OutputExternal',
     'overlayoutlines': 'OverlayOutlines',
     'reassignobjectnumbers': 'ReassignObjectNumbers',
     'relateobjects': 'RelateObjects',
@@ -97,7 +95,6 @@ pymodule_to_cpmodule = {
     'rescaleintensity': 'RescaleIntensity',
     'resize': 'Resize',
     'saveimages': 'SaveImages',
-    'sendemail': 'SendEmail',
     'smooth': 'Smooth',
     'straightenworms': 'StraightenWorms',
     'thresholding': 'Thresholding',
@@ -124,7 +121,6 @@ builtin_modules = [
     'correctilluminationapply',
     'correctilluminationcalculate',
     'createbatchfiles',
-    'createwebpage',
     'crop',
     'definegrid',
     'dilation',
@@ -157,7 +153,6 @@ builtin_modules = [
     'imagemath',
     'images',
     'imagesegmentation',
-    'inputexternal',
     'invertforprinting',
     'labelimages',
     'loaddata',
@@ -185,7 +180,6 @@ builtin_modules = [
     'namesandtypes',
     'noisereduction',
     'opening',
-    'outputexternal',
     'overlayoutlines',
     'reassignobjectnumbers',
     'relateobjects',
@@ -193,7 +187,6 @@ builtin_modules = [
     'rescaleintensity',
     'resize',
     'saveimages',
-    'sendemail',
     'smooth',
     'straightenworms',
     'thresholding',
