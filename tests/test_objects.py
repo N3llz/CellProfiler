@@ -33,8 +33,8 @@ class TestObjects(unittest.TestCase):
         return p.relate_children(c)
 
     def test_01_01_set_segmented(self):
-        x = cellprofiler.object.Objects()
-        x.set_segmented(self.__segmented10)
+        x = cpo.Objects()
+        x.segmented = self.__segmented10
         self.assertTrue((self.__segmented10 == x.segmented).all())
 
     def test_01_02_segmented(self):
@@ -54,8 +54,8 @@ class TestObjects(unittest.TestCase):
         self.assertTrue(numpy.all(segmented3d == objects.segmented))
 
     def test_01_03_set_unedited_segmented(self):
-        x = cellprofiler.object.Objects()
-        x.set_unedited_segmented(self.__unedited_segmented10)
+        x = cpo.Objects()
+        x.unedited_segmented = self.__unedited_segmented10
         self.assertTrue((self.__unedited_segmented10 == x.unedited_segmented).all())
 
     def test_01_04_unedited_segmented(self):
@@ -74,8 +74,8 @@ class TestObjects(unittest.TestCase):
         self.assertTrue(numpy.all(unedited_segmented3d == objects.unedited_segmented))
 
     def test_01_05_set_small_removed_segmented(self):
-        x = cellprofiler.object.Objects()
-        x.set_small_removed_segmented(self.__small_removed_segmented10)
+        x = cpo.Objects()
+        x.small_removed_segmented = self.__small_removed_segmented10
         self.assertTrue((self.__small_removed_segmented10 == x.small_removed_segmented).all())
 
     def test_01_06_small_removed_segmented(self):
@@ -726,7 +726,7 @@ class TestSegmentation(unittest.TestCase):
         shape = (1, 1, 1, 50, 50)
         s = cellprofiler.object.Segmentation(sparse=ijv)
         self.assertFalse(s.has_shape())
-        s.set_shape(shape)
+        s.shape = shape
         self.assertEqual(tuple(s.shape), shape)
 
 
