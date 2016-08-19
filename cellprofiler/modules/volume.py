@@ -110,7 +110,7 @@ class Volume(cellprofiler.module.Module):
             workspace.display_data.image = x
 
     def display(self, workspace, figure):
-        image = workspace.display_data.image[15]
+        image = workspace.display_data.image[0]
 
         dimensions = (1, 1)
 
