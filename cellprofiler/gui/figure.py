@@ -19,7 +19,9 @@ import matplotlib.backends.backend_wxagg
 import matplotlib.backends.backend_wxagg
 import matplotlib.cm
 import matplotlib.colorbar
+import matplotlib.gridspec
 import matplotlib.patches
+import matplotlib.pyplot
 import numpy
 import numpy.ma
 import os
@@ -284,7 +286,7 @@ class Figure(wx.Frame):
         self.widgets = []
         self.mouse_down = None
         self.remove_menu = []
-        self.figure = figure = matplotlib.figure.Figure()
+        self.figure = matplotlib.pyplot.Figure()
         self.panel = matplotlib.backends.backend_wxagg.FigureCanvasWxAgg(self, -1, self.figure)
         if secret_panel_class is None:
             secret_panel_class = wx.Panel
@@ -541,7 +543,7 @@ class Figure(wx.Frame):
             y1 = max(self.mouse_down[1], evt.ydata)
         if self.mouse_mode == MODE_MEASURE_LENGTH:
             self.on_mouse_move_measure_length(evt, x0, y0, x1, y1)
-        elif not self.mouse_mode == MODE_MEASURE_LENGTH:
+        elif not self.mouse_mode == MODE_NONE:
             self.on_mouse_move_show_pixel_data(evt, x0, y0, x1, y1)
 
     def get_pixel_data_fields_for_status_bar(self, im, xi, yi):
@@ -1065,6 +1067,49 @@ class Figure(wx.Frame):
                 slider.Value = orig_alpha
                 on_slider(None)
 
+    def gridshow(self, layout, images, cmap='gray'):
+        gridspec = matplotlib.gridspec.GridSpec(*layout)
+
+        # Center the grid at the slice with the greatest mean intensity.
+        # Assumes all images have the same z
+        means = [numpy.mean(img) for _idx, img in enumerate(images[0])]
+        max_mean = numpy.max(means)
+        center = means.index(max_mean)
+
+        # Determine the indices of the first and last slices to display.
+        start = max(0, center - 4)
+        stop = min(center + 5, images[0].shape[0])
+
+        # From the number of slices that are displayable, determine the
+        # shape of the grid these can be displayed in.
+        n_slices = stop - start
+        n_rows = n_slices / 3 + (1 if n_slices % 3 != 0 else 0)
+        n_cols = 3 if n_rows != 1 else n_slices
+        dimensions = (n_rows, n_cols)
+
+        for idx, image in enumerate(images):
+            subplot_spec = gridspec[idx]
+            self.__add_grid(dimensions, subplot_spec, image, start, stop, cmap)
+
+    def __add_grid(self, dimensions, subplot_spec, image, start, stop, cmap):
+        gridspec = matplotlib.gridspec.GridSpecFromSubplotSpec(*dimensions, subplot_spec=subplot_spec)
+
+        for idx, img in enumerate(image[start:stop]):
+            ax = matplotlib.pyplot.Subplot(self.figure, gridspec[idx])
+
+            if idx / 3 != (dimensions[0] - 1):
+                ax.set_xticklabels([])
+
+            if idx % 3 != 0:
+                ax.set_yticklabels([])
+
+            ax.imshow(img, cmap=cmap)
+
+            self.figure.add_subplot(ax)
+
+        # TODO: Figure out tight layout
+        matplotlib.pyplot.show()
+
     @allow_sharexy
     def subplot_imshow(self, x, y, image, title=None, clear=True, colormap=None,
                        colorbar=False, normalize=None, vmin=0, vmax=1,
@@ -1431,7 +1476,7 @@ class Figure(wx.Frame):
         image = image.astype(numpy.float32)
         if isinstance(colormap, matplotlib.cm.ScalarMappable):
             colormap = colormap.cmap
-        
+
         # Perform normalization
         if normalize == 'log':
             if is_color_image(image):
