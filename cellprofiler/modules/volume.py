@@ -110,6 +110,6 @@ class Volume(cellprofiler.module.Module):
             workspace.display_data.image = x
 
     def display(self, workspace, figure):
-        figure.gridspec((1, 1), (3, 3))
+        figure.set_grids((1, 1))
 
-        figure.add_grid(0, workspace.display_data.image)
+        figure.gridshow(0, 0, workspace.display_data.image)
